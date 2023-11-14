@@ -3,7 +3,7 @@ pragma solidity 0.8.19;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 /// @title HARVEST ERC-20
-/// @author Cristian Richarte Gil - Harvest
+/// @author Cristian Richarte Gil - Harvest Heaven
 
 contract Harvest is ERC20 {
     constructor(
