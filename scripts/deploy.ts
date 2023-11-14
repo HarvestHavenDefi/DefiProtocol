@@ -1,21 +1,25 @@
 import { ethers } from "hardhat";
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const unlockTime = currentTimestampInSeconds + 60;
+  const manager = "0x0000"; //todo! Update with the manager Address
+  const amountToMint = 0; //todo! Update with the amount to mint
 
-  const lockedAmount = ethers.parseEther("0.001");
+  const signers = await ethers.getSigners();
+  const deployer = signers[0];
 
-  const lock = await ethers.deployContract("Lock", [unlockTime], {
-    value: lockedAmount,
-  });
+  const Harvest = await ethers.getContractFactory("Harvest");
+  const harvest = await Harvest.connect(deployer).deploy(manager, amountToMint);
 
-  await lock.waitForDeployment();
-
+  console.log(`Harvest contract deployed to:  ${await harvest.getAddress()}`);
+  console.log(`Name: ${await harvest.name()}`);
+  console.log(`Symbol: ${await harvest.symbol()}`);
   console.log(
-    `Lock with ${ethers.formatEther(
-      lockedAmount
-    )}ETH and unlock timestamp ${unlockTime} deployed to ${lock.target}`
+    `Amount HVR minted: ${ethers.formatEther(await harvest.totalSupply())} HVR`
+  );
+  console.log(
+    `Manager HVR balance:  ${ethers.formatEther(
+      await harvest.balanceOf(manager)
+    )}`
   );
 }
 
