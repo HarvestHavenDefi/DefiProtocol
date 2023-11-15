@@ -8,7 +8,7 @@ import { ethers } from "hardhat";
 
 describe("Harvest", () => {
   async function config() {
-    const amountToMint: number = 10000000;
+    const amountToMint: number = 20000000; // 20 millions
     const amountToMintWei = ethers.parseUnits(amountToMint.toString(), "ether");
     const name = "Harvest";
     const symbol = "HVR";
@@ -19,10 +19,7 @@ describe("Harvest", () => {
     const manager = signers[1];
 
     const Harvest = await ethers.getContractFactory("Harvest");
-    const harvest = await Harvest.connect(deployer).deploy(
-      manager,
-      amountToMint
-    );
+    const harvest = await Harvest.connect(deployer).deploy(manager);
 
     return {
       harvest,

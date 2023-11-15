@@ -1,14 +1,15 @@
+import { HardhatUserConfig } from "hardhat/config";
 import { ethers } from "hardhat";
+require("dotenv").config();
 
 async function main() {
-  const manager = "0x0000"; //todo! Update with the manager Address
-  const amountToMint = 0; //todo! Update with the amount to mint
+  const manager = process.env.MANAGER_PUBLIC_KEY?.toString()!; // Manager Address to send all funds once deployment
 
   const signers = await ethers.getSigners();
   const deployer = signers[0];
 
   const Harvest = await ethers.getContractFactory("Harvest");
-  const harvest = await Harvest.connect(deployer).deploy(manager, amountToMint);
+  const harvest = await Harvest.connect(deployer).deploy(manager);
 
   console.log(`Harvest contract deployed to:  ${await harvest.getAddress()}`);
   console.log(`Name: ${await harvest.name()}`);
