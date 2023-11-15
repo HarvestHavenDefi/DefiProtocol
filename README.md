@@ -1,4 +1,4 @@
-# Harvest Heaven (DeFi)
+# Harvest Haven (DeFi)
 
 <a href="https://harvesthaven.gitbook.io/" target="_blank">Harvest Haven Gitbook</a>
 
