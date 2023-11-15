@@ -1,8 +1,9 @@
 # Harvest Haven (DeFi)
 
-<a href="https://harvesthaven.gitbook.io/" target="_blank">Harvest Haven Gitbook</a>
+<a href="https://harvesthaven.gitbook.io/" target="_blank">Harvest Haven Gitbook</a> 🌱
 
-Mainnet Chain: Base (CHAIN ID: 8453 )
+Mainnet Chain: Base (CHAIN ID: 8453)
+
 Testnet Chain: Base Goerli (CHAIN ID: 84531) -> Faucet: https://bwarelabs.com/faucets/base-testnet
 
 ## Steps to reproduce
@@ -18,9 +19,16 @@ Testnet Chain: Base Goerli (CHAIN ID: 84531) -> Faucet: https://bwarelabs.com/fa
   - Run: `npx hardhat test`
 
 - For deployment:
-  - Run: `npx hardhat run scripts/<DEPLOYMENT SCRIPT.TS> --network <CHOOSEN NETWORK (hardhat, BaseMainnet, BaseTestnet)>`
+  - Run: `npx hardhat run scripts/<DEPLOYMENT SCRIPT.TS> --network "<CHOOSEN NETWORK>"`
 
-###`.env.example`
+_Note: Network options:_
+
+    - "hardhat": Forking Base Goerli testnet.
+    - "BaseMainnet": Base Mainnet  
+    - "BaseTestnet": Base Goerli Testnet
+
+      
+### `.env.example`
 
 ```.env
 # Manager (Total supply receiver)
