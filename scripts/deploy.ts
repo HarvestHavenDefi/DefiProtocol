@@ -7,7 +7,7 @@ async function main() {
   const signers = await ethers.getSigners();
   const deployer = signers[0];
 
-  const VestingContract = await ethers.getContractFactory("VestingContract");
+  const VestingContract = await ethers.getContractFactory("Vester");
   const vestingContract = await VestingContract.connect(deployer).deploy();
   const vestingAddress = await vestingContract.getAddress();
 

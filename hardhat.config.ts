@@ -23,11 +23,11 @@ const config: HardhatUserConfig = {
     // },
     BaseTestnet: {
       url: process.env.RPC_PROVIDER_TESTNET!,
-      accounts: [process.env.PRIVATE_KEY!, process.env.PRIVATE_KEY2!],
+      accounts: [process.env.PRIVATE_KEY!],
     },
     BaseMainnet: {
       url: process.env.RPC_PROVIDER_MAINNET!,
-      accounts: [process.env.PRIVATE_KEY!, process.env.PRIVATE_KEY2!],
+      accounts: [process.env.PRIVATE_KEY!],
     },
   },
   solidity: {

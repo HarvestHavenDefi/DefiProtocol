@@ -16,9 +16,9 @@ describe("Harvest", () => {
 
     const signers = await ethers.getSigners();
     const deployer = signers[0];
-    const manager = signers[1];
+    const managerAddress = process.env.MANAGER_PUBLIC_KEY!;
 
-    const VestingContract = await ethers.getContractFactory("VestingContract");
+    const VestingContract = await ethers.getContractFactory("Vester");
     const vestingContract = await VestingContract.connect(deployer).deploy();
     const vestingAddress = await vestingContract.getAddress();
 
@@ -27,7 +27,7 @@ describe("Harvest", () => {
 
     const Harvest = await ethers.getContractFactory("Harvest");
     const harvest = await Harvest.connect(deployer).deploy(
-      manager,
+      managerAddress,
       vestingAddress
     );
 
@@ -35,7 +35,7 @@ describe("Harvest", () => {
       harvest,
       amountToMint,
       amountToMintWei,
-      manager,
+      managerAddress,
       name,
       symbol,
       decimals,
@@ -70,13 +70,13 @@ describe("Harvest", () => {
 
     it("90% Total supply should be owned by Manager & 10% by dev vesting", async () => {
       const {
-        manager,
+        managerAddress,
         harvest,
         vestingAddress,
         expectedManagerBalance,
         expectedVestingBalance,
       } = await loadFixture(config);
-      const managerBalance = await harvest.balanceOf(manager.address);
+      const managerBalance = await harvest.balanceOf(managerAddress);
       const vestingBalance = await harvest.balanceOf(vestingAddress);
       const totalSupply = await harvest.totalSupply();
 
