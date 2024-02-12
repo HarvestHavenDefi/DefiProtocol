@@ -5,22 +5,22 @@ require("dotenv").config();
 const config: HardhatUserConfig = {
   defaultNetwork: "hardhat",
   networks: {
-    hardhat: {
-      chainId: 84531,
-      forking: {
-        url: process.env.RPC_PROVIDER_TESTNET!,
-      },
-      accounts: [
-        {
-          privateKey: process.env.PRIVATE_KEY!,
-          balance: "10000000000000000000000",
-        },
-        {
-          privateKey: process.env.PRIVATE_KEY2!,
-          balance: "10000000000000000000000",
-        },
-      ],
-    },
+    // hardhat: {
+    //   chainId: 84531,
+    //   forking: {
+    //     url: process.env.RPC_PROVIDER_TESTNET!,
+    //   },
+    //   accounts: [
+    //     {
+    //       privateKey: process.env.PRIVATE_KEY!,
+    //       balance: "10000000000000000000000",
+    //     },
+    //     {
+    //       privateKey: process.env.PRIVATE_KEY2!,
+    //       balance: "10000000000000000000000",
+    //     },
+    //   ],
+    // },
     BaseTestnet: {
       url: process.env.RPC_PROVIDER_TESTNET!,
       accounts: [process.env.PRIVATE_KEY!, process.env.PRIVATE_KEY2!],

@@ -18,8 +18,18 @@ describe("Harvest", () => {
     const deployer = signers[0];
     const manager = signers[1];
 
+    const VestingContract = await ethers.getContractFactory("VestingContract");
+    const vestingContract = await VestingContract.connect(deployer).deploy();
+    const vestingAddress = await vestingContract.getAddress();
+
+    const expectedManagerBalance = 18000000 * 10 ** 18; // 90%
+    const expectedVestingBalance = 2000000 * 10 ** 18; // 10%
+
     const Harvest = await ethers.getContractFactory("Harvest");
-    const harvest = await Harvest.connect(deployer).deploy(manager);
+    const harvest = await Harvest.connect(deployer).deploy(
+      manager,
+      vestingAddress
+    );
 
     return {
       harvest,
@@ -30,6 +40,10 @@ describe("Harvest", () => {
       symbol,
       decimals,
       deployer,
+      vestingAddress,
+      vestingContract,
+      expectedManagerBalance,
+      expectedVestingBalance,
     };
   }
 
@@ -54,16 +68,77 @@ describe("Harvest", () => {
       expect(await harvest.totalSupply()).to.equal(amountToMintWei);
     });
 
-    it("Total supply should be owned by Manager", async () => {
-      const { amountToMintWei, manager, harvest } = await loadFixture(config);
+    it("90% Total supply should be owned by Manager & 10% by dev vesting", async () => {
+      const {
+        manager,
+        harvest,
+        vestingAddress,
+        expectedManagerBalance,
+        expectedVestingBalance,
+      } = await loadFixture(config);
       const managerBalance = await harvest.balanceOf(manager.address);
+      const vestingBalance = await harvest.balanceOf(vestingAddress);
       const totalSupply = await harvest.totalSupply();
 
-      console.log("Balance:", managerBalance);
-      console.log("TotalSupply:", totalSupply);
-      console.log("amountToMint:", amountToMintWei);
-      expect(managerBalance).to.equal(totalSupply);
-      expect(managerBalance).to.equal(amountToMintWei);
+      console.log("Manager Balance:", managerBalance.toString());
+      console.log("Vesting Balance:", vestingBalance.toString());
+      console.log("Total Supply:", totalSupply.toString());
+      console.log(
+        "Expected Manager Balance (90% of Total Supply):",
+        expectedManagerBalance.toString()
+      );
+      console.log(
+        "Expected Vesting Balance (10% of Total Supply):",
+        expectedVestingBalance.toString()
+      );
+
+      expect(Number(managerBalance)).to.equal(expectedManagerBalance);
+      expect(Number(vestingBalance)).to.equal(expectedVestingBalance);
+    });
+
+    it("withdraw first vesting", async () => {
+      const { deployer, harvest, expectedVestingBalance, vestingContract } =
+        await loadFixture(config);
+      const vestingAmount = expectedVestingBalance / 10;
+
+      await vestingContract.withdraw(await harvest.getAddress());
+
+      const vestingBalance = await harvest.balanceOf(deployer);
+
+      expect(Number(vestingBalance)).to.equal(vestingAmount);
+      console.log("Developer now has: ", vestingBalance);
+    });
+
+    it("should withdraw the next vesting after 30 days", async () => {
+      const { deployer, harvest, expectedVestingBalance, vestingContract } =
+        await loadFixture(config);
+      const vestingAmount = expectedVestingBalance / 10;
+
+      await vestingContract.withdraw(await harvest.getAddress()); // First vesting
+      // Increase time by 30 days
+      for (let i = 0; i < 9; i++) {
+        await time.increase(32 * 24 * 60 * 60);
+        await vestingContract.withdraw(await harvest.getAddress());
+      }
+
+      const vestingBalance = await harvest.balanceOf(deployer);
+
+      console.log("Developer now has: ", vestingBalance);
+      expect(Number(vestingBalance)).to.equal(10 * vestingAmount);
+
+      // If the contract is empty of HVR then revert
+      await expect(vestingContract.withdraw(await harvest.getAddress())).to.be
+        .reverted;
+    });
+
+    it("should revert if withdraw before 30 days", async () => {
+      const { harvest, expectedVestingBalance, vestingContract } =
+        await loadFixture(config);
+
+      await vestingContract.withdraw(await harvest.getAddress()); // First vesting
+
+      await expect(vestingContract.withdraw(await harvest.getAddress())).to.be
+        .reverted;
     });
   });
 });

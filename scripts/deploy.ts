@@ -3,16 +3,23 @@ import { ethers } from "hardhat";
 require("dotenv").config();
 
 async function main() {
-  const manager = process.env.MANAGER_PUBLIC_KEY?.toString()!; // Manager Address to send all funds once deployment
-
+  const manager = process.env.MANAGER_PUBLIC_KEY?.toString()!; // Manager Address to send 90% funds once deployment
   const signers = await ethers.getSigners();
   const deployer = signers[0];
 
-  const Harvest = await ethers.getContractFactory("Harvest");
-  const harvest = await Harvest.connect(deployer).deploy(manager);
+  const VestingContract = await ethers.getContractFactory("VestingContract");
+  const vestingContract = await VestingContract.connect(deployer).deploy();
+  const vestingAddress = await vestingContract.getAddress();
 
+  const Harvest = await ethers.getContractFactory("Harvest");
+  const harvest = await Harvest.connect(deployer).deploy(
+    manager,
+    vestingAddress
+  );
+
+  console.log(`Vesting Address: ${vestingAddress}`);
   console.log(`Harvest contract deployed to:  ${await harvest.getAddress()}`);
-  console.log(`Name: ${await harvest.name()}`);
+  console.log(`\nName: ${await harvest.name()}`);
   console.log(`Symbol: ${await harvest.symbol()}`);
   console.log(
     `Amount HVR minted: ${ethers.formatEther(await harvest.totalSupply())} HVR`
@@ -20,6 +27,11 @@ async function main() {
   console.log(
     `Manager HVR balance:  ${ethers.formatEther(
       await harvest.balanceOf(manager)
+    )}`
+  );
+  console.log(
+    `Dev Vesting HVR balance:  ${ethers.formatEther(
+      await harvest.balanceOf(vestingAddress)
     )}`
   );
 }
