@@ -22,8 +22,8 @@ describe("Harvest", () => {
     const vestingContract = await VestingContract.connect(deployer).deploy();
     const vestingAddress = await vestingContract.getAddress();
 
-    const expectedManagerBalance = 18000000 * 10 ** 18; // 90%
-    const expectedVestingBalance = 2000000 * 10 ** 18; // 10%
+    const expectedManagerBalance = 19000000 * 10 ** 18; // 95%
+    const expectedVestingBalance = 1000000 * 10 ** 18; // 5%
 
     const Harvest = await ethers.getContractFactory("Harvest");
     const harvest = await Harvest.connect(deployer).deploy(
@@ -68,7 +68,7 @@ describe("Harvest", () => {
       expect(await harvest.totalSupply()).to.equal(amountToMintWei);
     });
 
-    it("90% Total supply should be owned by Manager & 10% by dev vesting", async () => {
+    it("95% Total supply should be owned by Manager & 15% by dev vesting", async () => {
       const {
         managerAddress,
         harvest,
@@ -80,17 +80,15 @@ describe("Harvest", () => {
       const vestingBalance = await harvest.balanceOf(vestingAddress);
       const totalSupply = await harvest.totalSupply();
 
-      console.log("Manager Balance:", managerBalance.toString());
-      console.log("Vesting Balance:", vestingBalance.toString());
-      console.log("Total Supply:", totalSupply.toString());
       console.log(
-        "Expected Manager Balance (90% of Total Supply):",
-        expectedManagerBalance.toString()
+        "Manager Balance:",
+        ethers.formatEther(managerBalance.toString())
       );
       console.log(
-        "Expected Vesting Balance (10% of Total Supply):",
-        expectedVestingBalance.toString()
+        "Vesting Balance:",
+        ethers.formatEther(vestingBalance.toString())
       );
+      console.log("Total Supply:", ethers.formatEther(totalSupply.toString()));
 
       expect(Number(managerBalance)).to.equal(expectedManagerBalance);
       expect(Number(vestingBalance)).to.equal(expectedVestingBalance);
@@ -99,32 +97,38 @@ describe("Harvest", () => {
     it("withdraw first vesting", async () => {
       const { deployer, harvest, expectedVestingBalance, vestingContract } =
         await loadFixture(config);
-      const vestingAmount = expectedVestingBalance / 10;
+      const vestingAmount = expectedVestingBalance / 5;
 
       await vestingContract.withdraw(await harvest.getAddress());
 
       const vestingBalance = await harvest.balanceOf(deployer);
 
       expect(Number(vestingBalance)).to.equal(vestingAmount);
-      console.log("Developer now has: ", vestingBalance);
+      console.log(
+        "Developer after first Vesting: ",
+        ethers.formatEther(vestingBalance.toString())
+      );
     });
 
     it("should withdraw the next vesting after 30 days", async () => {
       const { deployer, harvest, expectedVestingBalance, vestingContract } =
         await loadFixture(config);
-      const vestingAmount = expectedVestingBalance / 10;
+      const vestingAmount = expectedVestingBalance / 5;
 
       await vestingContract.withdraw(await harvest.getAddress()); // First vesting
       // Increase time by 30 days
-      for (let i = 0; i < 9; i++) {
+      for (let i = 0; i < 4; i++) {
         await time.increase(32 * 24 * 60 * 60);
         await vestingContract.withdraw(await harvest.getAddress());
       }
 
       const vestingBalance = await harvest.balanceOf(deployer);
 
-      console.log("Developer now has: ", vestingBalance);
-      expect(Number(vestingBalance)).to.equal(10 * vestingAmount);
+      console.log(
+        "Developer after total vesting (5 months): ",
+        ethers.formatEther(vestingBalance.toString())
+      );
+      expect(Number(vestingBalance)).to.equal(5 * vestingAmount);
 
       // If the contract is empty of HVR then revert
       await expect(vestingContract.withdraw(await harvest.getAddress())).to.be

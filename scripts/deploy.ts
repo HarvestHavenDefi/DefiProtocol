@@ -1,5 +1,5 @@
 import { HardhatUserConfig } from "hardhat/config";
-import { ethers } from "hardhat";
+import { ethers, run, network } from "hardhat";
 require("dotenv").config();
 
 async function main() {
@@ -34,6 +34,23 @@ async function main() {
       await harvest.balanceOf(vestingAddress)
     )}`
   );
+
+  try {
+    if (network.name !== "hardhat" && network.name !== "BaseTestnet") {
+      console.log("[!] Verifying...");
+      await run("verify:verify", {
+        address: await vestingContract.getAddress(),
+        constructorArguments: [],
+      });
+
+      await run("verify:verify", {
+        address: await harvest.getAddress(),
+        constructorArguments: [manager, vestingAddress],
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 // We recommend this pattern to be able to use async/await everywhere

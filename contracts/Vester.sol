@@ -10,8 +10,8 @@ import "hardhat/console.sol";
  * @author 0xCR6 - Harvest Haven
  */
 contract Vester {
-    uint256 public constant totalLocked = 2000000 ether; // Total amount of tokens to be vested
-    uint256 public constant vestingPeriod = 10; // 10 months vesting period
+    uint256 public constant totalLocked = 1000000 ether; // Total amount of tokens to be vested
+    uint256 public constant vestingPeriod = 5; // 5 months vesting period
     uint256 public constant vestingInterval = 30 days; // 30 days per interval
     uint256 public vestingsClaimed = 0; // Amount of vestings claimed
     address public immutable owner; // Owner of the contract
@@ -20,13 +20,7 @@ contract Vester {
         1710284400, // Example: March 13, 2024, 00:00:00 GMT+2
         1712959200,
         1715551200,
-        1718229600,
-        1720821600,
-        1723500000,
-        1726178400,
-        1728770400,
-        1731452400,
-        1734044400
+        1718229600
     ]; // Vesting schedule: Every 13th of each month at 00:00:00 GMT+2
 
     event Withdrawn(address indexed beneficiary, uint256 amount);

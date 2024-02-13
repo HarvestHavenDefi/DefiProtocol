@@ -24,11 +24,29 @@ const config: HardhatUserConfig = {
     BaseTestnet: {
       url: process.env.RPC_PROVIDER_TESTNET!,
       accounts: [process.env.PRIVATE_KEY!],
+      gasPrice: 35000000000,
     },
     BaseMainnet: {
       url: process.env.RPC_PROVIDER_MAINNET!,
       accounts: [process.env.PRIVATE_KEY!],
+      gasPrice: 35000000000,
     },
+  },
+  etherscan: {
+    apiKey: {
+      BaseMainnet: process.env.BASE_SCAN_API_KEY!,
+      BaseTestnet: process.env.BASE_SCAN_API_KEY!,
+    },
+    customChains: [
+      {
+        network: "BaseTestnet",
+        chainId: 84532,
+        urls: {
+          apiURL: "https://api-sepolia.basescan.org/api",
+          browserURL: "https://sepolia.basescan.org/",
+        },
+      },
+    ],
   },
   solidity: {
     version: "0.8.23",

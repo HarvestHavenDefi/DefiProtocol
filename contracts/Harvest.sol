@@ -18,7 +18,7 @@ contract Harvest is ERC20 {
         address manager,
         address vester
     ) payable ERC20("Harvest", "HVR") {
-        _mint(manager, 18000000 * 10 ** decimals());
-        _mint(vester, 2000000 * 10 ** decimals());
+        _mint(manager, 19000000 * 10 ** decimals());
+        _mint(vester, 1000000 * 10 ** decimals());
     }
 }

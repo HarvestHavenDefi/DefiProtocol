@@ -4,7 +4,13 @@
 
 Mainnet Chain: Base (CHAIN ID: 8453)
 
-Testnet Chain: Base Goerli (CHAIN ID: 84531) -> Faucet: https://bwarelabs.com/faucets/base-testnet
+- Harvest ERC-20:
+- Vester contract:
+
+Testnet Chain: Base Sepolia (CHAIN ID: 84532)
+
+- Harvest ERC-20: [0x59d7f67abaaf534e1baef17b6b988b0d4e37a966](https://sepolia.basescan.org/address/0x59d7f67abaaf534e1baef17b6b988b0d4e37a966)
+- Vester contract: [0xdb703099243e59ef2d8c741d053444211dcce42d](https://sepolia.basescan.org/address/0xdb703099243e59ef2d8c741d053444211dcce42d)
 
 ## Steps to reproduce
 
@@ -24,24 +30,24 @@ Testnet Chain: Base Goerli (CHAIN ID: 84531) -> Faucet: https://bwarelabs.com/fa
 _Note: Network options:_
 
     - "hardhat": Forking Base Goerli testnet.
-    - "BaseMainnet": Base Mainnet  
+    - "BaseMainnet": Base Mainnet
     - "BaseTestnet": Base Goerli Testnet
 
-      
 ### `.env.example`
 
 ```.env
 # Manager (Total supply receiver)
-MANAGER_PUBLIC_KEY=xxxxx
+MANAGER_PUBLIC_KEY=0xa3070E7Ff34aa7a1fBEFF961cA6d3A97115a8F4a
 
 # Deployers & Testing
+DEVELOPER=0x562a2b9177DD821cAA073f18F669a121Fd583508
 PRIVATE_KEY=xxxx
-PRIVATE_KEY2=xxxxx
 
 # RPC PROVIDERS
-RPC_PROVIDER_MAINNET=https://mainnet.base.org
-RPC_PROVIDER_TESTNET=https://goerli.base.org
+RPC_PROVIDER_MAINNET=https://base.llamarpc.com
+RPC_PROVIDER_TESTNET=https://base-sepolia.blockpi.network/v1/rpc/public
 
-# CHAIN ID Used for Forking
-CHAIN_ID_TESTNET=84531
+# BaseScan API Key for verification
+BASE_SCAN_API_KEY=xxxx
+
 ```
