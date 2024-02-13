@@ -4,8 +4,8 @@
 
 Mainnet Chain: Base (CHAIN ID: 8453)
 
-- Harvest ERC-20:
-- Vester contract:
+- Harvest ERC-20: [0x0](https://sepolia.basescan.org/address/0x0)
+- Vester contract: [0x0](https://sepolia.basescan.org/address/0x0)
 
 Testnet Chain: Base Sepolia (CHAIN ID: 84532)
 

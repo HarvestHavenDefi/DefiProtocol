@@ -29,7 +29,7 @@ const config: HardhatUserConfig = {
     BaseMainnet: {
       url: process.env.RPC_PROVIDER_MAINNET!,
       accounts: [process.env.PRIVATE_KEY!],
-      gasPrice: 35000000000,
+      // gasPrice: 35000000000,
     },
   },
   etherscan: {
