@@ -10,7 +10,6 @@ async function main() {
   const VestingContract = await ethers.getContractFactory("Vester");
   const vestingContract = await VestingContract.connect(deployer).deploy();
   const vestingAddress = await vestingContract.getAddress();
-
   const Harvest = await ethers.getContractFactory("Harvest");
   const harvest = await Harvest.connect(deployer).deploy(
     manager,
@@ -39,7 +38,7 @@ async function main() {
     if (network.name !== "hardhat" && network.name !== "BaseTestnet") {
       console.log("[!] Verifying...");
       await run("verify:verify", {
-        address: await vestingContract.getAddress(),
+        address: vestingAddress,
         constructorArguments: [],
       });
 
