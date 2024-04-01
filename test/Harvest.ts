@@ -136,11 +136,12 @@ describe("Harvest", () => {
     });
 
     it("should revert if withdraw before 30 days", async () => {
-      const { harvest, expectedVestingBalance, vestingContract } =
-        await loadFixture(config);
+      const { harvest, vestingContract } = await loadFixture(config);
 
       await vestingContract.withdraw(await harvest.getAddress()); // First vesting
 
+      // * It may not fail as the times are hardcoded in the contract, so maybe it get´s tested after the vesting period.
+      // * If so, it should not be reverted.
       await expect(vestingContract.withdraw(await harvest.getAddress())).to.be
         .reverted;
     });
