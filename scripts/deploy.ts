@@ -1,4 +1,3 @@
-import { HardhatUserConfig } from "hardhat/config";
 import { ethers, run, network } from "hardhat";
 require("dotenv").config();
 
