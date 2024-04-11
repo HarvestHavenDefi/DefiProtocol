@@ -2,7 +2,7 @@
 
 Mainnet Chain: Base (CHAIN ID: 8453)
 
-- Harvest ERC-20: [0x486C3fb721c7faA426D4E68D7769b4427F86a7d9](https://basescan.org/address/0x486C3fb721c7faA426D4E68D7769b4427F86a7d9)
+- Harvest ERC-20: [0x486C3fb721c7faA426D4E68D7769b4427F86a7d9](https://basescan.org/address/0x486C3fb721c7faA426D4E68D7769b4427F86a7d9) - [Audit](https://github.com/HarvestHavenDefi/DefiProtocol/blob/main/contracts/Harvest-HVR-Audit.pdf)
 - Vester contract: [0xcb8bBb6ABAF4E16B6c585eC1051E4cb91b89d04a](https://basescan.org/address/0xcb8bBb6ABAF4E16B6c585eC1051E4cb91b89d04a)
 
 Testnet Chain: Base Sepolia (CHAIN ID: 84532)
