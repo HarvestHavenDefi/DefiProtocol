@@ -1,3 +1,5 @@
+> Operational signing now uses encrypted Foundry keystores. Follow [KEYSTORE_MIGRATION.md](KEYSTORE_MIGRATION.md); older raw private key environment instructions below are superseded.
+
 # Harvest Haven (DeFi Protocol)
 
 Mainnet Chain: Base (CHAIN ID: 8453)
